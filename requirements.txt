@@ -1,5 +1,0 @@
-google-adk>=0.2.0
-python-dotenv>=1.0.1
-google-generativeai
-google-genai
-streamlit>=1.32.0
