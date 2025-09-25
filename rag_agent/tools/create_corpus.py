@@ -1,8 +1,9 @@
 from typing import Optional, TypedDict
+from google.adk.tools.tool_context import ToolContext
+from vertexai import rag
 
 class CreateCorpusResult(TypedDict):
     name: str
-    description: str
     status: str
 
 
@@ -11,24 +12,35 @@ class ToolContext(TypedDict, total=False):
 
 
 def create_corpus(corpus_name: str, tool_context: ToolContext) -> CreateCorpusResult:
-    """Create a new (logical) corpus for RAG ingestion.
+    """Create a new corpus with the specified name for RAG ingestion.
 
-    This is a lightweight stub that validates inputs and returns a structured
-    response. It does not perform any remote calls yet.
+    Args:
+    corpus_name (str): The name for the new corpus
+    tool_context (ToolContext): The tool context for the state management
+
     """
     if not corpus_name or not corpus_name.strip():
         raise ValueError("corpus_name is required and must be non-empty")
 
     normalized_name = corpus_name.strip()
-    corpus_description = ""
-    desc = tool_context.get("description")
-    if isinstance(desc, str):
-        corpus_description = desc.strip()
+
+    EMBEDDING_MODEL = "publishers/google/models/text-embedding-005"  # @param {type:"string", isTemplate: true}  # fmt: skip
+
+    embedding_model_config = rag.RagEmbeddingModelConfig(
+        vertex_prediction_endpoint=rag.VertexPredictionEndpoint(
+            publisher_model=EMBEDDING_MODEL
+        )
+    )
+    rag_corpus = rag.create_corpus(
+        display_name=normalized_name,
+        backend_config=rag.RagVectorDbConfig(
+            rag_embedding_model_config=embedding_model_config
+        )
+    )
 
     return {
         "name": normalized_name,
-        "description": corpus_description,
-        "status": "created",
+        "status": "created"
     }
 
 

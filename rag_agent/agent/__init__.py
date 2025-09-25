@@ -1,5 +1,5 @@
 import os
-import vertexai
+from google.cloud import aiplatform as vertexai
 from dotenv import load_dotenv
 
 # Get Vertex AI configuration from environment
