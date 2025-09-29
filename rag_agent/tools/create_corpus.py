@@ -1,17 +1,11 @@
-from typing import Optional, TypedDict
 from google.adk.tools.tool_context import ToolContext
 from vertexai import rag
 
-class CreateCorpusResult(TypedDict):
-    name: str
-    status: str
 
-
-class ToolContext(TypedDict, total=False):
-    description: str
-
-
-def create_corpus(corpus_name: str, tool_context: ToolContext) -> CreateCorpusResult:
+def create_corpus(
+    corpus_name: str, 
+    tool_context: ToolContext
+) -> dict:
     """Create a new corpus with the specified name for RAG ingestion.
 
     Args:
