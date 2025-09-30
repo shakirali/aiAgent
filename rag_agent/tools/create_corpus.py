@@ -1,5 +1,6 @@
 from google.adk.tools.tool_context import ToolContext
 from vertexai import rag
+from .utils import normalize_corpus_name, create_success_response, create_error_response
 
 
 def create_corpus(
@@ -13,28 +14,31 @@ def create_corpus(
     tool_context (ToolContext): The tool context for the state management
 
     """
-    if not corpus_name or not corpus_name.strip():
-        raise ValueError("corpus_name is required and must be non-empty")
+    try:
+        normalized_name = normalize_corpus_name(corpus_name)
 
-    normalized_name = corpus_name.strip()
+        EMBEDDING_MODEL = "publishers/google/models/text-embedding-005"  # @param {type:"string", isTemplate: true}  # fmt: skip
 
-    EMBEDDING_MODEL = "publishers/google/models/text-embedding-005"  # @param {type:"string", isTemplate: true}  # fmt: skip
-
-    embedding_model_config = rag.RagEmbeddingModelConfig(
-        vertex_prediction_endpoint=rag.VertexPredictionEndpoint(
-            publisher_model=EMBEDDING_MODEL
+        embedding_model_config = rag.RagEmbeddingModelConfig(
+            vertex_prediction_endpoint=rag.VertexPredictionEndpoint(
+                publisher_model=EMBEDDING_MODEL
+            )
         )
-    )
-    rag_corpus = rag.create_corpus(
-        display_name=normalized_name,
-        backend_config=rag.RagVectorDbConfig(
-            rag_embedding_model_config=embedding_model_config
+        rag_corpus = rag.create_corpus(
+            display_name=normalized_name,
+            backend_config=rag.RagVectorDbConfig(
+                rag_embedding_model_config=embedding_model_config
+            )
         )
-    )
 
-    return {
-        "name": normalized_name,
-        "status": "created"
-    }
+        return create_success_response(
+            f"Corpus '{normalized_name}' created successfully",
+            {
+                "name": normalized_name,
+                "status": "created"
+            }
+        )
+    except Exception as e:
+        return create_error_response(str(e), "create_corpus")
 
 
