@@ -320,7 +320,7 @@ python3 deploy.py --create
 When this command returns, if it succeeds it will print an AgentEngine resource
 name that looks something like this:
 ```
-projects/************/locations/us-central1/reasoningEngines/7737333693403889664
+projects/************/locations/europe-west4/reasoningEngines/7737333693403889664
 ```
 The last sequence of digits is the AgentEngine resource ID.
 
@@ -437,7 +437,7 @@ gcloud services enable sqladmin.googleapis.com \
 gcloud sql instances create ds-agent-session-service \
    --database-version=POSTGRES_17 \
    --tier=db-g1-small \
-   --region=us-central1 \
+   --region=europe-west4 \
    --edition=ENTERPRISE \
    --root-password=ds-agent-demo
 ```
@@ -454,9 +454,9 @@ gcloud run deploy data-science-agent \
   --memory 2G \
   --project $PROJECT_ID \
   --allow-unauthenticated \
-  --add-cloudsql-instances $PROJECT_ID:us-central1:ds-agent-session-service \
-  --update-env-vars SERVE_WEB_INTERFACE=True,SESSION_SERVICE_URI="postgresql+pg8000://postgres:ds-agent-demo@postgres/?unix_sock=/cloudsql/$PROJECT_ID:us-central1:ds-agent-session-service/.s.PGSQL.5432",GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
-  --region us-central1 
+  --add-cloudsql-instances $PROJECT_ID:europe-west4:ds-agent-session-service \
+  --update-env-vars SERVE_WEB_INTERFACE=True,SESSION_SERVICE_URI="postgresql+pg8000://postgres:ds-agent-demo@postgres/?unix_sock=/cloudsql/$PROJECT_ID:europe-west4:ds-agent-session-service/.s.PGSQL.5432",GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+  --region europe-west4 
 ```
 
 When this runs successfully, you should see:
