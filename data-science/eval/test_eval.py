@@ -19,7 +19,7 @@ from dotenv import find_dotenv, load_dotenv
 from google.adk.evaluation.agent_evaluator import AgentEvaluator
 
 pytest_plugins = ("pytest_asyncio",)
-
+print_details = True
 
 @pytest.fixture(scope="session", autouse=True)
 def load_env():

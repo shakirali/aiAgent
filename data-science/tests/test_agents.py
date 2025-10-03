@@ -20,19 +20,20 @@ import pytest
 import unittest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from dotenv import load_dotenv
+load_dotenv()
 
 from google.genai import types
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-
 from data_science.agent import root_agent
 from data_science.sub_agents.bqml.agent import root_agent as bqml_agent
 from data_science.sub_agents.bigquery.agent import database_agent
 
+
 session_service = InMemorySessionService()
 artifact_service = InMemoryArtifactService() 
-
 
 class TestAgents(unittest.IsolatedAsyncioTestCase): 
     """Test cases for the analytics agent and its sub-agents."""
@@ -74,16 +75,15 @@ class TestAgents(unittest.IsolatedAsyncioTestCase):
     @pytest.mark.db_agent
     async def test_db_agent_can_handle_env_query(self):
         """Test the db_agent with a query from environment variable."""
-        query = "what countries exist in the train table?"
+        query = "List years sold in the train table?"
         response = self._run_agent(database_agent, query)
         print(response)
-        # self.assertIn("Canada", response)
         self.assertIsNotNone(response)
 
     @pytest.mark.ds_agent
     async def test_ds_agent_can_be_called_from_root(self):
         """Test the ds_agent from the root agent."""
-        query = "plot the most selling category"
+        query = "plot the number of houses sold per year"
         response = self._run_agent(root_agent, query)
         print(response)
         self.assertIsNotNone(response)
@@ -110,7 +110,3 @@ class TestAgents(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
-    # testagent = TestAgents
-    # testagent.setUp(testagent)
-    # testagent.test_root_agent_can_list_tools(testagent)
-    # testagent.test_db_agent_can_handle_env_query(testagent)
