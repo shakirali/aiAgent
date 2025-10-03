@@ -21,7 +21,7 @@ import unittest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from dotenv import load_dotenv
-load_dotenv()
+
 
 from google.genai import types
 from google.adk.artifacts import InMemoryArtifactService
@@ -34,6 +34,7 @@ from data_science.sub_agents.bigquery.agent import database_agent
 
 session_service = InMemorySessionService()
 artifact_service = InMemoryArtifactService() 
+load_dotenv()
 
 class TestAgents(unittest.IsolatedAsyncioTestCase): 
     """Test cases for the analytics agent and its sub-agents."""
