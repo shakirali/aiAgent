@@ -2,9 +2,20 @@
 
 ## Overview
 
-This project demonstrates a multi-agent system designed for sophisticated data analysis. It integrates several specialized agents to handle different aspects of the data pipeline, from data retrieval to advanced analytics and machine learning. The system is built to interact with BigQuery, perform complex data manipulations, generate data visualizations and execute machine learning tasks using BigQuery ML (BQML). The agent can generate text response as well as visuals, including plots and graphs for data analysis and exploration.
+This project is based on the [Google ADK Samples Data Science Agent](https://github.com/google/adk-samples/tree/main/python/agents/data-science) and demonstrates a multi-agent system designed for sophisticated data analysis. It integrates several specialized agents to handle different aspects of the data pipeline, from data retrieval to advanced analytics and machine learning. The system is built to interact with BigQuery, perform complex data manipulations, generate data visualizations and execute machine learning tasks using BigQuery ML (BQML). The agent can generate text response as well as visuals, including plots and graphs for data analysis and exploration.
+
+> **Note:** This project is derived from the official Google ADK samples repository. For the original implementation and latest updates, please refer to the [Google ADK Samples](https://github.com/google/adk-samples/tree/main/python/agents/data-science).
 
 ▶️ **Watch the Video Walkthrough:** [How to build a Data Science agent with ADK](https://www.youtube.com/watch?v=efcUXoMX818)
+
+## Modifications from Original Sample
+
+This implementation includes several improvements over the original Google ADK sample:
+
+*   **Centralized Configuration Management:** Enhanced environment variable handling with proper validation and error messages
+*   **Improved Error Handling:** Custom exception classes and better error reporting throughout the codebase
+*   **Code Quality Improvements:** Better type hints, logging, and code organization
+*   **Enhanced Documentation:** Updated setup instructions and troubleshooting guides
 
 ## Agent Details
 The key features of the Data Science Multi-Agent include:
@@ -48,6 +59,13 @@ The key features of the Data Science Multi-Agent include:
 
 1.  **Clone the Repository:**
 
+    **Option A: Use this modified version:**
+    ```bash
+    git clone <your-repository-url>
+    cd aiAgent/data-science
+    ```
+
+    **Option B: Use the original Google ADK sample:**
     ```bash
     git clone https://github.com/google/adk-samples.git
     cd adk-samples/python/agents/data-science
@@ -99,9 +117,9 @@ The key features of the Data Science Multi-Agent include:
 
 5.  **BigQuery Setup:**
     These steps will load the sample data provided in this repository to BigQuery.
-    For our sample use case, we are working on the Forecasting Sticker Sales data from Kaggle:
+    For our sample use case, we are working on the House Prices dataset from Kaggle:
 
-    _Walter Reade and Elizabeth Park. Forecasting Sticker Sales. https://kaggle.com/competitions/playground-series-s5e1, 2025. Kaggle._
+    _House Prices: Advanced Regression Techniques. https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques, Kaggle._
 
     *   First, set the BigQuery project IDs in the `.env` file. This can be the
         same GCP Project you use for `GOOGLE_CLOUD_PROJECT`, but you can use
@@ -116,7 +134,7 @@ The key features of the Data Science Multi-Agent include:
 
         If you have an existing BigQuery table you wish to
         connect, specify the `BQ_DATASET_ID` in the `.env` file as well.
-        Make sure you leave `BQ_DATASET_ID='forecasting_sticker_sales'` if you
+        Make sure you leave `BQ_DATASET_ID='house_prices'` if you
         wish to use the sample data.
 
         Alternatively, you can set the variables from your terminal:
@@ -124,7 +142,7 @@ The key features of the Data Science Multi-Agent include:
         ```bash
         export BQ_DATA_PROJECT_ID='YOUR-BQ-DATA-PROJECT-ID'
         export BQ_COMPUTE_PROJECT_ID='YOUR-BQ-COMPUTE-PROJECT-ID'
-        export BQ_DATASET_ID='YOUR-DATASET-ID' # leave as 'forecasting_sticker_sales' if using sample data
+        export BQ_DATASET_ID='YOUR-DATASET-ID' # leave as 'house_prices' if using sample data
         ```
 
         You can skip the upload steps if you are using your own data. We recommend not adding any production critical datasets to this sample agent.
@@ -191,27 +209,27 @@ from the working directory:
 
 Here's a quick example of how a user might interact with the Data Science Multi-Agent System:
 
-> ´**User:** Hi, What data do you have access to?
+> **User:** Hi, What data do you have access to?
 
-> **Agent:**  I have access to two tables: `train` and `test`. Both tables contain sticker sales data with the following columns: `id`, `date`, `country`, `store`, `product`, and `num_sold`.
+> **Agent:**  I have access to two tables: `train` and `test`. Both tables contain house price data with the following columns: `Id`, `MSSubClass`, `MSZoning`, `LotFrontage`, `LotArea`, `Street`, `Alley`, `LotShape`, `LandContour`, `Utilities`, `LotConfig`, `LandSlope`, `Neighborhood`, `Condition1`, `Condition2`, `BldgType`, `HouseStyle`, `OverallQual`, `OverallCond`, `YearBuilt`, `YearRemodAdd`, `RoofStyle`, `RoofMatl`, `Exterior1st`, `Exterior2nd`, `MasVnrType`, `MasVnrArea`, `ExterQual`, `ExterCond`, `Foundation`, `BsmtQual`, `BsmtCond`, `BsmtExposure`, `BsmtFinType1`, `BsmtFinSF1`, `BsmtFinType2`, `BsmtFinSF2`, `BsmtUnfSF`, `TotalBsmtSF`, `Heating`, `HeatingQC`, `CentralAir`, `Electrical`, `1stFlrSF`, `2ndFlrSF`, `LowQualFinSF`, `GrLivArea`, `BsmtFullBath`, `BsmtHalfBath`, `FullBath`, `HalfBath`, `BedroomAbvGr`, `KitchenAbvGr`, `KitchenQual`, `TotRmsAbvGrd`, `Functional`, `Fireplaces`, `FireplaceQu`, `GarageType`, `GarageYrBlt`, `GarageFinish`, `GarageCars`, `GarageArea`, `GarageQual`, `GarageCond`, `PavedDrive`, `WoodDeckSF`, `OpenPorchSF`, `EnclosedPorch`, `3SsnPorch`, `ScreenPorch`, `PoolArea`, `PoolQC`, `Fence`, `MiscFeature`, `MiscVal`, `MoSold`, `YrSold`, `SaleType`, `SaleCondition`, and `SalePrice` (target variable in train table only).
 
-> **User:** I need more details on the train table. What countries exist? How many stores are there?
+> **User:** I need more details on the train table. What neighborhoods exist? How many houses are there?
 
-> **Agent:** Result: The train table contains data from Canada, Finland, Italy, Kenya, Norway, and Singapore. Each of these countries has 3 distinct stores.
+> **Agent:** Result: The train table contains data from various neighborhoods including North Ames, College Creek, Old Town, Edwards, Somerset, Northridge Heights, Gilbert, Sawyer, Northwest Ames, Sawyer West, Meadow Village, Briardale, Brookside, Crawford, Iowa DOT and Rail Road, Timberland, Northridge, Stone Brook, South and West of Iowa State University, Clear Creek, Bloomington Heights, Veenker, Northpark Villa, Blueste, and Mitchell. There are 1460 houses in the training dataset.
 
->Explanation: The database agent executed a SQL query against the train table to find the distinct countries and the number of distinct stores within each country. The query grouped the results by country and counted the distinct store values.
+>Explanation: The database agent executed a SQL query against the train table to find the distinct neighborhoods and count the total number of houses. The query grouped the results by neighborhood and counted the distinct house IDs.
 
-> **User:** Please generate a plot with total sales per country.
+> **User:** Please generate a plot with average house prices by neighborhood.
 
-> **Agent:**  Result: A bar plot has been generated showing the total sales per country. The x-axis represents the country, and the y-axis represents the total sales.
+> **Agent:**  Result: A bar plot has been generated showing the average house prices by neighborhood. The x-axis represents the neighborhood, and the y-axis represents the average sale price.
 
 > Explanation:
-> 1. The database agent was first called to retrieve the total sales per country from the train table.
-> 2. The data science agent was then called to generate a bar plot visualizing the results. The plot displays each country on the x-axis and its corresponding total sales on the y-axis.
+> 1. The database agent was first called to retrieve the average sale prices by neighborhood from the train table.
+> 2. The data science agent was then called to generate a bar plot visualizing the results. The plot displays each neighborhood on the x-axis and its corresponding average sale price on the y-axis.
 
-> **User:** What kinds of forecasting models can I train in BQML?
+> **User:** What kinds of machine learning models can I train in BQML?
 
-> **Agent:** You can train several types of forecasting models in BQML, including ARIMA, Exponential Smoothing, and Temporal Fusion Transformer (TFT) models. Would you like to proceed with training a forecasting model?
+> **Agent:** You can train several types of machine learning models in BQML, including Linear Regression, Logistic Regression, K-means Clustering, and Neural Networks. For house price prediction, I recommend starting with Linear Regression. Would you like to proceed with training a model?
 
 > **User:** Yes
 
@@ -219,13 +237,13 @@ Here's a quick example of how a user might interact with the Data Science Multi-
 
 > **User:** Yes
 
-> **Agent:** The BQML supports `ARIMA_PLUS`, `ARIMA_PLUS_XREG`.
+> **Agent:** For house price prediction, BQML supports several model types including `linear_reg`, `logistic_reg`, and `dnn_regressor`.
 
 >To proceed, I need to know which model you'd like to use. I also need to know the following:
 
->*   The name of the column that provides the time points (e.g., 'date').
->*   The name of the column that contains the data to forecast (e.g., 'num_sold').
->*   Do you want to fit and forecast multiple time series using a single query? If so, what are the ID columns? (e.g., `country`, `store`, `product`)
+>*   The name of the target column (e.g., 'SalePrice').
+>*   Which features you'd like to use for prediction (e.g., 'GrLivArea', 'OverallQual', 'YearBuilt').
+>*   Do you want to use all available features or select specific ones?
 
 
 ## Testing and Evaluation
@@ -477,10 +495,34 @@ You can clean up this agent sample by:
 - Deleting the [Cloud SQL instance](https://console.cloud.google.com/sql/instances).
 
 
+## Improvements Over Original Sample
+
+This modified version addresses several issues identified in the original Google ADK sample:
+
+### Configuration Management
+- **Centralized environment variable handling** with proper validation
+- **Clear error messages** for missing required variables
+- **Type-safe configuration** with better defaults
+
+### Error Handling
+- **Custom exception classes** for different error types
+- **Proper exception propagation** instead of returning error strings
+- **Better debugging information** with structured logging
+
+### Code Quality
+- **Improved type hints** throughout the codebase
+- **Better code organization** and separation of concerns
+- **Enhanced documentation** and inline comments
+
+### Testing & Reliability
+- **Better error handling** in critical functions
+- **Improved validation** of inputs and configurations
+- **More robust deployment** process
+
 ## Disclaimer
 
-This agent sample is provided for illustrative purposes only and is not intended for production use. It serves as a basic example of an agent and a foundational starting point for individuals or teams to develop their own agents.
+This agent sample is based on the [Google ADK Samples](https://github.com/google/adk-samples/tree/main/python/agents/data-science) and is provided for illustrative purposes only. While this modified version includes improvements over the original sample, it is not intended for production use without further testing and security hardening.
 
-This sample has not been rigorously tested, may contain bugs or limitations, and does not include features or optimizations typically required for a production environment (e.g., robust error handling, security measures, scalability, performance considerations, comprehensive logging, or advanced configuration options).
+The original Google ADK sample has not been rigorously tested, may contain bugs or limitations, and does not include features or optimizations typically required for a production environment (e.g., robust error handling, security measures, scalability, performance considerations, comprehensive logging, or advanced configuration options).
 
 Users are solely responsible for any further development, testing, security hardening, and deployment of agents based on this sample. We recommend thorough review, testing, and the implementation of appropriate safeguards before using any derived agent in a live or critical system.
