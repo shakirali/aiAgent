@@ -25,11 +25,13 @@ from google.adk.tools import ToolContext
 from google.adk.tools.bigquery.client import get_bigquery_client
 from google.cloud import bigquery
 from google.genai import Client
+from dotenv import load_dotenv  
 
 from .chase_sql import chase_constants
 
 # Assume that `BQ_COMPUTE_PROJECT_ID` and `BQ_DATA_PROJECT_ID` are set in the
 # environment. See the `data_agent` README for more details.
+load_dotenv()
 dataset_id=get_env_var("BQ_DATASET_ID")
 data_project = get_env_var("BQ_DATA_PROJECT_ID")
 compute_project = get_env_var("BQ_COMPUTE_PROJECT_ID")

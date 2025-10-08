@@ -307,7 +307,7 @@ directory, run this command:
 uv build --wheel --out-dir deployment
 ```
 
-This will create a file named `data_science-0.1-py3-none-any.whl` in the
+This will create a file named `data_science-0.1.0-py3-none-any.whl` in the
 `deployment` directory.
 
 Then run the below command. This will create a staging bucket in your GCP project and deploy the agent to Vertex AI Agent Engine:

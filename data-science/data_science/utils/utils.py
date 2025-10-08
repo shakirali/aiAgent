@@ -15,17 +15,6 @@
 import json
 import os
 
-from vertexai.preview.extensions import Extension
-
-
-def list_all_extensions():
-  extensions = Extension.list(location='us-central1')
-  for extension in extensions:
-    print('Name:', extension.gca_resource.name)
-    print('Display Name:', extension.gca_resource.display_name)
-    print('Description:', extension.gca_resource.description)
-
-
 def get_env_var(var_name):
   """Retrieves the value of an environment variable.
 
@@ -90,7 +79,3 @@ def extract_json_from_model_output(model_output):
     msg = f'Error decoding JSON: {e}'
     print(msg)
     return {'error': msg}
-
-
-if __name__ == '__main__':
-  list_all_extensions()

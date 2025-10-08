@@ -26,6 +26,8 @@ from google.cloud import storage
 from vertexai import agent_engines
 from vertexai.preview.reasoning_engines import AdkApp
 
+load_dotenv()
+
 FLAGS = flags.FLAGS
 flags.DEFINE_string("project_id", None, "GCP project ID.")
 flags.DEFINE_string("location", None, "GCP location.")
@@ -38,7 +40,7 @@ flags.DEFINE_bool("create", False, "Create a new agent.")
 flags.DEFINE_bool("delete", False, "Delete an existing agent.")
 flags.mark_bool_flags_as_mutual_exclusive(["create", "delete"])
 
-AGENT_WHL_FILE = "data_science-0.1-py3-none-any.whl"
+AGENT_WHL_FILE = "data_science-0.1.0-py3-none-any.whl"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -200,6 +202,13 @@ def main(argv: list[str]) -> None:  # pylint: disable=unused-argument
     env_vars["CODE_INTERPRETER_EXTENSION_NAME"] = os.getenv(
         "CODE_INTERPRETER_EXTENSION_NAME")
     env_vars["NL2SQL_METHOD"] = os.getenv("NL2SQL_METHOD")
+    
+    # Filter out None values and empty strings to avoid deployment errors
+    env_vars = {k: v for k, v in env_vars.items() if v is not None and v.strip() != ""}
+    
+    logger.info("Environment variables being passed to deployment:")
+    for key, value in env_vars.items():
+        logger.info("  %s: %s", key, value)
 
     logger.info("Using PROJECT: %s", project_id)
     logger.info("Using LOCATION: %s", location)
