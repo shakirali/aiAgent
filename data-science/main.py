@@ -30,10 +30,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from google.adk.cli.fast_api import get_fast_api_app
 from google.cloud import logging as google_cloud_logging
-
-
-# Load environment variables from .env file
-load_dotenv()
+from data_science.config import get_optional_env_var
 
 logging_client = google_cloud_logging.Client()
 logger = logging_client.logger(__name__)

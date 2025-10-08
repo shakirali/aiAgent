@@ -25,6 +25,7 @@ from google.genai import types
 from google.adk.agents import Agent
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.tools import load_artifacts
+from data_science.config import get_optional_env_var
 
 from .sub_agents import bqml_agent
 from .sub_agents.bigquery.tools import (
@@ -62,7 +63,7 @@ def setup_before_agent_call(callback_context: CallbackContext):
 
 
 root_agent = Agent(
-    model=os.getenv("ROOT_AGENT_MODEL"),
+    model=get_optional_env_var("ROOT_AGENT_MODEL"),
     name="db_ds_multiagent",
     instruction=return_instructions_root(),
     global_instruction=(

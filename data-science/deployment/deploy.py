@@ -25,8 +25,7 @@ from google.api_core import exceptions as google_exceptions
 from google.cloud import storage
 from vertexai import agent_engines
 from vertexai.preview.reasoning_engines import AdkApp
-
-load_dotenv()
+from data_science.config import get_optional_env_var
 
 FLAGS = flags.FLAGS
 flags.DEFINE_string("project_id", None, "GCP project ID.")

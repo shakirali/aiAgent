@@ -20,6 +20,7 @@ from google.adk.tools.bigquery import BigQueryToolset
 from google.adk.tools.agent_tool import AgentTool
 from google.adk.tools.bigquery.config import BigQueryToolConfig, WriteMode
 from google.adk.agents.callback_context import CallbackContext
+from data_science.config import get_optional_env_var
 
 
 from data_science.sub_agents.bqml.tools import (
@@ -100,7 +101,7 @@ bq_execute_sql = BigQueryToolset(
 )
 
 root_agent = Agent(
-    model=os.getenv("BQML_AGENT_MODEL"),
+    model=get_optional_env_var("BQML_AGENT_MODEL"),
     name="bq_ml_agent",
     instruction=return_instructions_bqml(),
     before_agent_callback=setup_before_agent_call,
